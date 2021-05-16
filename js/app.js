@@ -48,7 +48,6 @@ getDataLocal(){
         Flowrs.all =JSON.parse(localData);
     }
 }
-
 function renderData (){
     const tableElement = document.createElement('tableElement');
     table.appendChild(tableElement);
