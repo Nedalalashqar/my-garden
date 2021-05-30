@@ -1,105 +1,112 @@
 'use strict';
 
-const form = document.getElementById('form');
-const table = document.getElementById('table');
-let tHedar = ['#' , 'Img' , 'Name' , 'Season'];
 
+let form = document.getElementById( 'form' );
+let table = document.getElementById( 'table' );
+let tHeader = ['#', 'Image', 'Name', 'Season'];
 
-function Flowrs ( flowrsName , flowrsCategory , flowerSeason){
-  this.flowrsName = flowrsName;
-  this.flowrsCategory = flowrsCategory;
-  this.flowerSeason = flowerSeason ;
-  this.flowrsPath = ' ' ;
-  Flowrs.call.push(this);
+let Flowers = function ( name,image,season ){
+  this.name = name;
+  this.image = `./img/${image}.jpeg`;
+  this.season = season;
+  Flowers.all.push( this );
+};
+
+Flowers.all = [];
+
+function tableHead() {
+
+  let thHeder = document.createElement( 'tr' );
+  for ( let i = 0; i < tHeader.length; i++ ) {
+    let thE1 = document.createElement( 'th' );
+    thHeder.appendChild( thE1 );
+    thE1.textContent = tHeader[i];
+    table.appendChild( thHeder );
+  }
 }
-Flowrs.all=[];
-
-Flowrs.prototype.toLowerCase = function() {
-  this.flowrsCategory = this.flowrsCategory.toLowerCase();
-
-};
-
-Flowrs.prototype.Path = function() {
-  this.flowrsPath = `./img/${this.flowrsCategory}.jpeg`;
-
-};
-
-form.addEventListener('submit' , function(eve){
-  eve.preventDefault();
-  let newFlowrNmae = eve.target.flowrsName.value;
-  let newFlowrCategory= eve.target.flowrsCategory.value;
-  let newFlowrSeason = eve.target.flowerSeason.value;
 
 
-  const Nflowr = new Flowrs(newFlowrNmae , newFlowrCategory , newFlowrSeason) ;
-  Nflowr.toLowerCase();
-
-  Nflowr.Path();
-  localStorage.setItem ( 'flowrData' , JSON.stringify( Flowrs.all ) );
-  
-
+function renderCatagory() {
   table.innerHTML = '';
+  tableHead();
+  for ( let i = 0; i < Flowers.all.length; i++ ) {
+    let trE2 = document.createElement( 'tr' );
+    let tdE1 = document.createElement( 'td' );
+    let deleteButton = document.createElement( 'button' );
+    deleteButton.setAttribute( 'id', Flowers.all[i].name );
+    deleteButton.textContent = 'X';
+    trE2.appendChild( deleteButton );
+    table.appendChild( trE2 );
+    let tdE2 = document.createElement( 'td' );
+    trE2.appendChild( tdE2 );
+    // created img elemnt and put it in the TD
+    let img =document.createElement( 'img' );
+    img.src= Flowers.all[i].image;
+    // tdE2.textContent = Flowers.all[i].image;
+    tdE2.appendChild( img );
+    trE2.appendChild( tdE1 );
+    tdE1.textContent = Flowers.all[i].name;
+    let tdE3 = document.createElement( 'td' );
+    trE2.appendChild( tdE3 );
+    tdE3.textContent = Flowers.all[i].season;
 
-} );
+    console.log( trE2 );
 
-getDataLocal(){
-    let localData = localStorage.setItem('flowrData');
-    if(localStorage){
-        Flowrs.all =JSON.parse(localData);
+    deleteButton.addEventListener( 'click',deleteRow );
+    function deleteRow(){
+      console.log( Flowers.all[i] ); 
+      // used slice to remove from flowers.all array and use the saving to local storage function again
+      Flowers.all.splice( i,1 );
+      getList();
+      // made the row that has everything to an empty string
+
+      trE2.innerHTML='';
+      
     }
-}
-function renderData (){
-    const tableElement = document.createElement('tableElement');
-    table.appendChild(tableElement);
-    tableElement.setAttribute('id' , 'tableData');
 
-    const trHead = document.createElement('tr');
-    tableElement.appendChild(trHead);
-    for(let i = 0 ; tHedar.length ; i++){
-        const thEl1 = document.createElement('th');
-        thEl1.textContent=tHedar[i];
-
-    }
-    for (let j =0 ;Flowrs.all.length ; j++){
-        const trEl2 = document.createElement('tr');
-        tHedar.appendChild(trEl2);
-
-        const tdEl = document.createElement('td');
-        trEl2.appendChild(tdEl);
-        tdEl.textContent='x';
-        tdEl.setAttribute('onlick' , 'deleteMe(this)');
-
-        const tdImgEl =document.createElement('img');
-        tdImgEl.src= Flowrs.all[j].flowrsPath;
-        trEl2.appendChild(tdImgEl);
-
-        const tdNameEl = document.createElement('td');
-        trEl2.appendChild(tdNameEl);
-        tdNameEl.textContent= Flowrs.all[j].flowrsName;
-
-        const tdSeaEl = document.createElement('td');
-        trEl2.appendChild(tdSeaEl);
-        tdSeaEl.textContent=Flowrs.all[j].flowerSeason;
-
-
-    
-
-
-    }
+  }
 }
 
 
-function deleteMe(meIamHere){
-    const elementTable = document.getElementById('tableData');
-    let tableRowIndex = meIamHere.parentNode.rowIndex;
-    elementTable .deleteRow(tableRowIndex);
-    Flowrs.all.splice(tableRowIndex-1,1),
-    localStorage.setItem('flowrData' , JSON.stringify(Flowrs.all));
-    table.innerHTML='';
-    getDataLocal();
+form.addEventListener( 'submit', eventButton );
+function eventButton( event ) {
+  event.preventDefault();
+  let flowerName = event.target.Name.value;
+  let flowerimage = event.target.Image.value;
+  let flowerSeason = event.target.Season.value;
+  new Flowers ( flowerName,flowerimage,flowerSeason );
+  getList();
+  renderCatagory();
 }
 
-function clearLocal({
-    localStorage.clear();
-    window.location.reload('Refresh')
-})
+// table.addEventListener( 'click', deleteList );
+// function deleteList( event ) {
+//   event.preventDefault();
+//   let index;
+//   if ( event.target.id !== 'table' ) {
+//     for ( let i = 0; i < Flowers.all.length; i++ ) {
+//       if ( event.target.id === Flowers.all[i].title ) {
+//         index = i;
+//         Flowers.all.splice( index, 1 );
+//       }
+//     }
+//     getList();
+//     getFrom();
+//   }
+// }
+
+
+function getList() {
+  localStorage.setItem( 'Flowers', JSON.stringify( Flowers.all ) );
+}
+
+function getFrom() {
+  Flowers.all = JSON.parse( localStorage.getItem( 'Flowers' ) ) || [];
+  renderCatagory();
+}
+getFrom();
+
+
+
+
+

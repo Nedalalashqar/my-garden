@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,300&display=swap');
+
+header {
+  
+    background-color:#107dac;
+    text-align: center;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-family: 'Roboto', sans-serif;
+    font-size: large;
+    font-weight: bold;
+    color: white;
+}
+
+img{
+    width: 100px;
+    height: 100px;
+}
+
+main{
+    width: 960px;
+    margin:auto;
+    display: grid;
+    grid-template-columns: 400px 400px; 
+}
+
+section{
+    padding-top: 150px;
+    display: grid;
+    grid-template-columns: 400px 400px;
+    font-family: 'Roboto', sans-serif;
+}
+
+table{
+    border-collapse: collapse;
+}
+
+table tr:nth-child(odd){
+    background-color: #1ebbd7;  
+}
+
+table tr:nth-child(even){
+    background-color: #71c7ec;
+}
+
+tr{
+    border: 2px solid white;
+}
+
+th {
+    padding: 5px;
+}
+
+input{
+    margin-top: 10px;
+    width:300px;
+    height: 20px;
+    grid-template-columns: 30px 30px;
+}
+
+select{
+    margin-top: 10px;
+    width: 310px;
+    height: 20px;
+}
+
+.form button{
+    width:100px;
+    height: 20px;
+}
+
+.clear {
+    background-color: #a10909;
+    color: white;
+}
+
+.save {
+    background-color:#71c7ec;
+    color: white;
+}
+
+footer{
+    background-color:#107dac;
+    text-align: center;
+    padding-top: 2px;
+    padding-bottom: 30px;
+    font-family: 'Roboto', sans-serif;
+    font-size:medium;
+    color: white;
+}
